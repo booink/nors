@@ -7,7 +7,7 @@ mod counter;
 mod counter_type;
 mod file_type;
 mod output_type;
-mod result_type;
+pub mod result_type;
 use crate::nors::counter::{
     BytesCounter, CSVCrateCounter, Counter, FillBufferCounter, LinesCounter, ReadLineCounter,
 };
@@ -18,7 +18,7 @@ use crate::nors::result_type::ResultType;
 
 #[derive(Serialize, Debug)]
 pub struct ResultsByCountType {
-    results: HashMap<ResultType, u64>,
+    pub results: HashMap<ResultType, u64>,
 }
 
 impl ResultsByCountType {
