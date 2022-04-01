@@ -16,7 +16,7 @@ impl Counter for CSVCrateCounter {
         for _ in reader.records() {
             r += 1;
         }
-        vec![(ResultType::CSVRecords, r)]
+        vec![(ResultType::CsvRecords, r)]
             .into_iter()
             .collect::<HashMap<_, _>>()
     }

@@ -5,3 +5,9 @@ services:
       context: .
     volumes:
       - .:/app
+  build-wheels-for-python:
+    build:
+      context: bindings/python3
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/io

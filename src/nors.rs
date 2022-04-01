@@ -1,3 +1,4 @@
+use anyhow::Context;
 use serde::Serialize;
 use std::collections::HashMap;
 use std::fs::File;
@@ -49,7 +50,8 @@ impl<'a> Nors<'a> {
     }
 
     fn reader(&self) -> anyhow::Result<BufReader<File>> {
-        let f = File::open(self.path)?;
+        let f =
+            File::open(self.path).with_context(|| format!("File open error. {}", &self.path))?;
         Ok(BufReader::new(f))
     }
 

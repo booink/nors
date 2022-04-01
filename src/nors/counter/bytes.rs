@@ -72,7 +72,7 @@ impl Counter for BytesCounter {
 
         //println!("even: {:?}", lines);
         //println!("odd: {:?}", lines2);
-        vec![(ResultType::Lines, l), (ResultType::CSVRecords, r)]
+        vec![(ResultType::Lines, l), (ResultType::CsvRecords, r)]
             .into_iter()
             .collect::<HashMap<_, _>>()
     }
