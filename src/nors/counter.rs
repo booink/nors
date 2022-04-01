@@ -21,7 +21,7 @@ pub trait Counter {
     fn count(file_type: &FileType, reader: BufReader<File>) -> HashMap<ResultType, u64> {
         match file_type {
             FileType::PlainText => Self::count_by_plain_text(reader),
-            FileType::CSV => Self::count_by_csv(reader),
+            FileType::Csv => Self::count_by_csv(reader),
         }
     }
     fn count_by_plain_text(reader: BufReader<File>) -> HashMap<ResultType, u64>;
@@ -54,7 +54,7 @@ pub mod tests {
         {
             let result = func(reader("l1-r1.csv"));
             assert_eq!(result[&ResultType::Lines], 1);
-            assert_eq!(result[&ResultType::CSVRecords], 1);
+            assert_eq!(result[&ResultType::CsvRecords], 1);
         }
 
         pub fn line_10<F>(func: F)
@@ -63,7 +63,7 @@ pub mod tests {
         {
             let result = func(reader("l10-r10.csv"));
             assert_eq!(result[&ResultType::Lines], 10);
-            assert_eq!(result[&ResultType::CSVRecords], 10);
+            assert_eq!(result[&ResultType::CsvRecords], 10);
         }
     }
 
@@ -76,7 +76,7 @@ pub mod tests {
         {
             let result = func(reader("l2-r1.csv"));
             assert_eq!(result[&ResultType::Lines], 2);
-            assert_eq!(result[&ResultType::CSVRecords], 1);
+            assert_eq!(result[&ResultType::CsvRecords], 1);
         }
 
         pub fn record_10<F>(func: F)
@@ -85,7 +85,7 @@ pub mod tests {
         {
             let result = func(reader("l20-r10.csv"));
             assert_eq!(result[&ResultType::Lines], 20);
-            assert_eq!(result[&ResultType::CSVRecords], 10);
+            assert_eq!(result[&ResultType::CsvRecords], 10);
         }
     }
 
@@ -98,7 +98,7 @@ pub mod tests {
         {
             let result = func(reader("l1-r1-dq.csv"));
             assert_eq!(result[&ResultType::Lines], 1);
-            assert_eq!(result[&ResultType::CSVRecords], 1);
+            assert_eq!(result[&ResultType::CsvRecords], 1);
         }
 
         pub fn line_10<F>(func: F)
@@ -107,7 +107,7 @@ pub mod tests {
         {
             let result = func(reader("l10-r10-dq.csv"));
             assert_eq!(result[&ResultType::Lines], 10);
-            assert_eq!(result[&ResultType::CSVRecords], 10);
+            assert_eq!(result[&ResultType::CsvRecords], 10);
         }
 
         pub fn record_1<F>(func: F)
@@ -116,7 +116,7 @@ pub mod tests {
         {
             let result = func(reader("l2-r1-dq.csv"));
             assert_eq!(result[&ResultType::Lines], 2);
-            assert_eq!(result[&ResultType::CSVRecords], 1);
+            assert_eq!(result[&ResultType::CsvRecords], 1);
         }
 
         pub fn record_10<F>(func: F)
@@ -125,7 +125,7 @@ pub mod tests {
         {
             let result = func(reader("l20-r10-dq.csv"));
             assert_eq!(result[&ResultType::Lines], 20);
-            assert_eq!(result[&ResultType::CSVRecords], 10);
+            assert_eq!(result[&ResultType::CsvRecords], 10);
         }
     }
 
@@ -138,7 +138,7 @@ pub mod tests {
         {
             let result = func(reader("l1-r1-bs.csv"));
             assert_eq!(result[&ResultType::Lines], 1);
-            assert_eq!(result[&ResultType::CSVRecords], 1);
+            assert_eq!(result[&ResultType::CsvRecords], 1);
         }
 
         pub fn line_10<F>(func: F)
@@ -147,7 +147,7 @@ pub mod tests {
         {
             let result = func(reader("l10-r10-bs.csv"));
             assert_eq!(result[&ResultType::Lines], 10);
-            assert_eq!(result[&ResultType::CSVRecords], 10);
+            assert_eq!(result[&ResultType::CsvRecords], 10);
         }
 
         pub fn record_1<F>(func: F)
@@ -156,7 +156,7 @@ pub mod tests {
         {
             let result = func(reader("l2-r1-bs.csv"));
             assert_eq!(result[&ResultType::Lines], 2);
-            assert_eq!(result[&ResultType::CSVRecords], 1);
+            assert_eq!(result[&ResultType::CsvRecords], 1);
         }
 
         pub fn record_10<F>(func: F)
@@ -165,7 +165,7 @@ pub mod tests {
         {
             let result = func(reader("l20-r10-bs.csv"));
             assert_eq!(result[&ResultType::Lines], 20);
-            assert_eq!(result[&ResultType::CSVRecords], 10);
+            assert_eq!(result[&ResultType::CsvRecords], 10);
         }
     }
 }

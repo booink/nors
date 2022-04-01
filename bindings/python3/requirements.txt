@@ -1,0 +1,4 @@
+setuptools-rust>=1.2.0
+pytest
+wheel
+twine

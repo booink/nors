@@ -4,16 +4,16 @@ use std::str::FromStr;
 #[derive(Debug)]
 pub enum OutputType {
     PlainText,
-    JSON,
+    Json,
 }
 
 impl FromStr for OutputType {
-    type Err = ();
+    type Err = anyhow::Error;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "plaintext" => Ok(Self::PlainText),
-            "json" => Ok(Self::JSON),
-            _ => Err(()),
+            "json" => Ok(Self::Json),
+            _ => Err(anyhow::anyhow!("Output type error.")),
         }
     }
 }
@@ -28,11 +28,11 @@ impl OutputType {
     pub fn print(&self, results: &ResultsByCountType) {
         match self {
             Self::PlainText => {
-                for (result_type, result) in results.results.iter() {
+                for (result_type, result) in &results.results {
                     println!("{:?}: {}", result_type, result);
                 }
             }
-            Self::JSON => {
+            Self::Json => {
                 println!(
                     "{}",
                     serde_json::to_string(&results).expect("json serialize error.")

@@ -5,14 +5,14 @@ use std::str::FromStr;
 #[derive(Debug)]
 pub enum FileType {
     PlainText,
-    CSV,
+    Csv,
 }
 
 impl FromStr for FileType {
     type Err = ();
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         Ok(match s {
-            "csv" => Self::CSV,
+            "csv" => Self::Csv,
             _ => Self::PlainText,
         })
     }

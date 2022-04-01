@@ -1,3 +1,4 @@
+use anyhow::Context;
 use serde::Serialize;
 use std::collections::HashMap;
 use std::fs::File;
@@ -7,7 +8,7 @@ mod counter;
 mod counter_type;
 mod file_type;
 mod output_type;
-mod result_type;
+pub mod result_type;
 use crate::nors::counter::{
     BytesCounter, CSVCrateCounter, Counter, FillBufferCounter, LinesCounter, ReadLineCounter,
 };
@@ -18,7 +19,7 @@ use crate::nors::result_type::ResultType;
 
 #[derive(Serialize, Debug)]
 pub struct ResultsByCountType {
-    results: HashMap<ResultType, u64>,
+    pub results: HashMap<ResultType, u64>,
 }
 
 impl ResultsByCountType {
@@ -49,7 +50,8 @@ impl<'a> Nors<'a> {
     }
 
     fn reader(&self) -> anyhow::Result<BufReader<File>> {
-        let f = File::open(self.path)?;
+        let f =
+            File::open(self.path).with_context(|| format!("File open error. {}", &self.path))?;
         Ok(BufReader::new(f))
     }
 

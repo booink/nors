@@ -35,38 +35,38 @@ impl Counter for FillBufferCounter {
                        // 偶数ならレコードが１行で構成されている
                        // 奇数なら改行などで複数行にまたがっている
                        // 次の奇数の行がレコードの終わりの行
-        let mut q = true;
+        let mut quoting = true; // quote の間かどうか
+        let mut escaped = false; // 前の char が escape 文字かどうか
         let lf = &b'\n';
         let quotation = &b'"';
         let escape = &b'\\';
-        let mut escaped = false;
 
-        /*
         // デバッグ用
         let mut q_count = 0;
         let mut record_ends = Vec::new();
         let mut invalids = Vec::new();
-        */
 
         while buf_len > 0 {
             for b in buffer {
                 if b == lf {
                     l += 1; // 改行があれば Lines をインクリメント
-                    if q {
-                        /*
-                        record_ends.push(l);
-                        if q_count != 10 {
-                            invalids.push(l);
+                    if quoting {
+                        if cfg!(debug_assertions) {
+                            record_ends.push(l);
+                            if q_count != 10 {
+                                invalids.push(l);
+                            }
+                            q_count = 0;
                         }
-                        q_count = 0;
-                        */
-                        // double quotation が偶数個なら Records をインクリメント
-                        r += 1;
+
+                        r += 1; // double quotation が偶数個なら Records をインクリメント
                     }
                 } else if b == quotation && !escaped {
                     // double quotationで前の文字がescapeじゃないときはクオートと判断
-                    q = !q;
-                    //q_count += 1;
+                    quoting = !quoting;
+                    if cfg!(debug_assertions) {
+                        q_count += 1;
+                    }
                 }
                 escaped = if b == escape {
                     // バックスラッシュが２つ並んだ場合はescapeを解除
@@ -80,15 +80,16 @@ impl Counter for FillBufferCounter {
             buffer = reader.fill_buf().unwrap();
             buf_len = buffer.len();
         }
-        if !q {
+        if !quoting {
             // 最後のレコードが中途半端に終わっている場合は、１レコードあると見なす
             r += 1;
         }
-        /*
-        println!("{:?}", record_ends);
-        println!("invalids: {:?}", invalids[0]);
-        */
-        vec![(ResultType::Lines, l), (ResultType::CSVRecords, r)]
+        if cfg!(debug_assertions) {
+            println!("{:?}", record_ends);
+            println!("invalids: {:?}", invalids[0]);
+        }
+
+        vec![(ResultType::Lines, l), (ResultType::CsvRecords, r)]
             .into_iter()
             .collect::<HashMap<_, _>>()
     }
